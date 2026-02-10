@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Валентинка 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3rem;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease;
+    }
+
+    input {
+      padding: 15px;
+      width: 100%;
+      border-radius: 30px;
+      border: none;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      background: #fff;
+      color: #ff4f81;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,.2);
+    }
+
+    .message {
+      display: none;
+      animation: fadeInUp 2s ease forwards;
+    }
+
+    .message h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .hearts span {
+      position: absolute;
+      font-size: 20px;
+      animation: float 6s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      from { transform: translateY(100vh) scale(0.5); }
+      to { transform: translateY(-10vh) scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="center" id="form">
+    <h1>Для тебя 💘</h1>
+    <input id="nameInput" placeholder="Введи своё имя" />
+    <button onclick="start()">Открыть валентинку</button>
+  </div>
+
+  <div class="center message" id="message">
+    <h2 id="hello"></h2>
+    <p>Ты делаешь этот мир теплее, светлее и счастливее ✨</p>
+    <p>Пусть каждый день будет наполнен любовью, улыбками и чудесами 💖</p>
+    <p style="margin-top:20px; font-size:1.2rem;">С Днём Святого Валентина 💕</p>
+    <p style="margin-top:10px; opacity:.9;">С любовью, Эмиль 💖</p>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <script>
+    function start() {
+      const name = document.getElementById('nameInput').value || 'Моя любовь';
+      document.getElementById('form').style.display = 'none';
+      const msg = document.getElementById('message');
+      document.getElementById('hello').innerText = name + ', это для тебя ❤️';
+      msg.style.display = 'block';
+      createHearts();
+    }
+
+    function createHearts() {
+      const hearts = document.getElementById('hearts');
+      for (let i = 0; i < 40; i++) {
+        const span = document.createElement('span');
+        span.innerText = '❤️';
+        span.style.left = Math.random() * 100 + 'vw';
+        span.style.animationDelay = Math.random() * 5 + 's';
+        span.style.fontSize = 14 + Math.random() * 30 + 'px';
+        hearts.appendChild(span);
+      }
+    }
+  </script>
+
+</body>
+</html>

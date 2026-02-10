@@ -23,7 +23,11 @@
       transform: translate(-50%, -50%);
       text-align: center;
       width: 90%;
-      max-width: 500px;
+      max-width: 800px;
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      justify-content: center;
     }
 
     h1 {
@@ -92,38 +96,110 @@
       from { transform: translateY(100vh) scale(0.5); }
       to { transform: translateY(-10vh) scale(1.2); }
     }
+  .image-box {
+      flex: 1;
+      max-width: 300px;
+    }
+
+    .image-box img {
+      width: 100%;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    .content { flex: 1; }
+
+    @media (max-width: 768px) {
+      .center { flex-direction: column; }
+    }
+
   </style>
 </head>
 <body>
 
   <div class="center" id="form">
-    <h1>Для тебя 💘</h1>
+    <div class="image-box">
+      <!-- СЮДА ВСТАВИШЬ СВОЁ ИЗОБРАЖЕНИЕ -->
+      <img src="war-thunder-meme-spin-tank.png" alt="Love image" />
+    </div>
+    <div class="content">
+    <h1 id="title">Для тебя 💘</h1>
+
+    <div style="margin-bottom:15px;">
+      <button onclick="setLang('ru')">RU</button>
+      <button onclick="setLang('en')">EN</button>
+    </div>
+
     <input id="nameInput" placeholder="Введи своё имя" />
-    <button onclick="start()">Открыть валентинку</button>
+    <button onclick="start()" id="openBtn">Открыть валентинку</button>
   </div>
 
   <div class="center message" id="message">
+    <div class="image-box">
+      <img src="your-image.jpg" alt="Love image" />
+    </div>
+    <div class="content">
     <h2 id="hello"></h2>
-    <p>Ты делаешь этот мир теплее, светлее и счастливее ✨</p>
-    <p>Пусть каждый день будет наполнен любовью, улыбками и чудесами 💖</p>
-    <p style="margin-top:20px; font-size:1.2rem;">С Днём Святого Валентина 💕</p>
-    <p style="margin-top:10px; opacity:.9;">С любовью, Эмиль 💖</p>
+    <p id="text1"></p>
+    <p id="text2"></p>
+    <p style="margin-top:20px; font-size:1.2rem;" id="finalText"></p>
+    <p style="margin-top:10px; opacity:.9;" id="fromText"></p>
   </div>
 
   <div class="hearts" id="hearts"></div>
 
   <script>
+    let lang = 'ru';
+
+    const texts = {
+      ru: {
+        title: 'Для тебя 💘',
+        placeholder: 'Введи своё имя',
+        open: 'Открыть валентинку',
+        hello: (name) => `${name}, это для тебя ❤️`,
+        t1: 'Ты делаешь этот мир теплее, светлее и счастливее ✨',
+        t2: 'Пусть каждый день будет наполнен любовью, улыбками и чудесами 💖',
+        final: 'С Днём Святого Валентина 💕',
+        from: 'С любовью, Эмиль 💖'
+      },
+      en: {
+        title: 'For You 💘',
+        placeholder: 'Enter your name',
+        open: 'Open Valentine',
+        hello: (name) => `${name}, this is for you ❤️`,
+        t1: 'You make this world warmer, brighter, and happier ✨',
+        t2: 'May every day be filled with love, smiles, and magic 💖',
+        final: 'Happy Valentine’s Day 💕',
+        from: 'With love, Emil 💖'
+      }
+    };
+
+    function setLang(l) {
+      lang = l;
+      const t = texts[lang];
+      document.getElementById('title').innerText = t.title;
+      document.getElementById('nameInput').placeholder = t.placeholder;
+      document.getElementById('openBtn').innerText = t.open;
+    }
+
     function start() {
-      const name = document.getElementById('nameInput').value || 'Моя любовь';
+      const name = document.getElementById('nameInput').value || 'My Love';
       document.getElementById('form').style.display = 'none';
-      const msg = document.getElementById('message');
-      document.getElementById('hello').innerText = name + ', это для тебя ❤️';
-      msg.style.display = 'block';
+      document.getElementById('message').style.display = 'block';
+
+      const t = texts[lang];
+      document.getElementById('hello').innerText = t.hello(name);
+      document.getElementById('text1').innerText = t.t1;
+      document.getElementById('text2').innerText = t.t2;
+      document.getElementById('finalText').innerText = t.final;
+      document.getElementById('fromText').innerText = t.from;
+
       createHearts();
     }
 
     function createHearts() {
       const hearts = document.getElementById('hearts');
+      hearts.innerHTML = '';
       for (let i = 0; i < 40; i++) {
         const span = document.createElement('span');
         span.innerText = '❤️';
@@ -133,6 +209,8 @@
         hearts.appendChild(span);
       }
     }
+
+    setLang('ru');
   </script>
 
 </body>

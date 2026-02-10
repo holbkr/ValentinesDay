@@ -23,16 +23,16 @@
       transform: translate(-50%, -50%);
       text-align: center;
       width: 90%;
-      max-width: 800px;
+      max-width: 900px; /* Увеличил ширину контейнера */
       display: flex;
-      gap: 30px;
+      gap: 40px;
       align-items: center;
       justify-content: center;
     }
 
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 3rem;
+      font-size: 3.5rem;
       margin-bottom: 20px;
       animation: fadeIn 2s ease;
     }
@@ -42,9 +42,10 @@
       width: 100%;
       border-radius: 30px;
       border: none;
-      font-size: 1rem;
+      font-size: 1.1rem;
       text-align: center;
       outline: none;
+      color: #333;
     }
 
     button {
@@ -56,6 +57,7 @@
       cursor: pointer;
       background: #fff;
       color: #ff4f81;
+      font-weight: bold;
       transition: transform .2s, box-shadow .2s;
     }
 
@@ -64,15 +66,16 @@
       box-shadow: 0 10px 20px rgba(0,0,0,.2);
     }
 
-    .message {
+    /* Состояние до открытия - только форма */
+    #message {
       display: none;
-      animation: fadeInUp 2s ease forwards;
+      animation: fadeInUp 1.5s ease forwards;
     }
 
     .message h2 {
       font-family: 'Pacifico', cursive;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+      font-size: 2.8rem;
+      margin-bottom: 15px;
     }
 
     .hearts span {
@@ -80,6 +83,8 @@
       font-size: 20px;
       animation: float 6s linear infinite;
       opacity: 0.8;
+      pointer-events: none;
+      z-index: -1;
     }
 
     @keyframes fadeIn {
@@ -88,62 +93,65 @@
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translate(-50%, -40%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
     }
 
     @keyframes float {
       from { transform: translateY(100vh) scale(0.5); }
       to { transform: translateY(-10vh) scale(1.2); }
     }
-  .image-box {
-      flex: 1;
-      max-width: 300px;
+
+    .image-box {
+      flex: 1.2; /* Сделал картинку больше */
+      max-width: 450px; /* Увеличил макс ширину */
     }
 
     .image-box img {
       width: 100%;
-      border-radius: 25px;
-      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+      display: block;
+      border-radius: 30px;
+      box-shadow: 0 25px 50px rgba(0,0,0,.3);
     }
 
-    .content { flex: 1; }
+    .content { 
+        flex: 1; 
+        text-align: center;
+    }
 
     @media (max-width: 768px) {
       .center { flex-direction: column; }
+      .image-box { max-width: 300px; }
+      h1 { font-size: 2.5rem; }
     }
-
   </style>
 </head>
 <body>
 
   <div class="center" id="form">
+    <div class="content">
+      <h1 id="title">Для тебя 💘</h1>
+      <div style="margin-bottom:20px;">
+        <button onclick="setLang('ru')">RU</button>
+        <button onclick="setLang('en')">EN</button>
+      </div>
+      <input id="nameInput" placeholder="Введи своё имя" />
+      <br>
+      <button onclick="start()" id="openBtn">Открыть валентинку</button>
+    </div>
+  </div>
+
+  <div class="center" id="message">
     <div class="image-box">
-      <!-- СЮДА ВСТАВИШЬ СВОЁ ИЗОБРАЖЕНИЕ -->
       <img src="war-thunder-meme-spin-tank.png" alt="Love image" />
     </div>
     <div class="content">
-    <h1 id="title">Для тебя 💘</h1>
-
-    <div style="margin-bottom:15px;">
-      <button onclick="setLang('ru')">RU</button>
-      <button onclick="setLang('en')">EN</button>
+      <h2 id="hello"></h2>
+      <p id="text1" style="font-size: 1.2rem; line-height: 1.5;"></p>
+      <p id="text2" style="font-size: 1.2rem; line-height: 1.5;"></p>
+      <p style="margin-top:30px; font-size:1.5rem; font-weight: bold;" id="finalText"></p>
+      <p style="margin-top:20px; opacity:.9; font-style: italic;" id="fromText"></p>
     </div>
-
-    <input id="nameInput" placeholder="Введи своё имя" />
-    <button onclick="start()" id="openBtn">Открыть валентинку</button>
-  </div>
-
-  <div class="center message" id="message">
-    <div class="image-box">
-      <img src="your-image.jpg" alt="Love image" />
-    </div>
-    <div class="content">
-    <h2 id="hello"></h2>
-    <p id="text1"></p>
-    <p id="text2"></p>
-    <p style="margin-top:20px; font-size:1.2rem;" id="finalText"></p>
-    <p style="margin-top:10px; opacity:.9;" id="fromText"></p>
   </div>
 
   <div class="hearts" id="hearts"></div>
@@ -184,8 +192,13 @@
 
     function start() {
       const name = document.getElementById('nameInput').value || 'My Love';
+      
+      // Скрываем форму
       document.getElementById('form').style.display = 'none';
-      document.getElementById('message').style.display = 'block';
+      
+      // Показываем сообщение и картинку
+      const messageBlock = document.getElementById('message');
+      messageBlock.style.display = 'flex';
 
       const t = texts[lang];
       document.getElementById('hello').innerText = t.hello(name);
@@ -198,15 +211,15 @@
     }
 
     function createHearts() {
-      const hearts = document.getElementById('hearts');
-      hearts.innerHTML = '';
+      const heartsContainer = document.getElementById('hearts');
+      heartsContainer.innerHTML = '';
       for (let i = 0; i < 40; i++) {
         const span = document.createElement('span');
         span.innerText = '❤️';
         span.style.left = Math.random() * 100 + 'vw';
         span.style.animationDelay = Math.random() * 5 + 's';
         span.style.fontSize = 14 + Math.random() * 30 + 'px';
-        hearts.appendChild(span);
+        heartsContainer.appendChild(span);
       }
     }
 
